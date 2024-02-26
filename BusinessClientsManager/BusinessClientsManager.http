@@ -1,6 +1,10 @@
 @BusinessClientsManager_HostAddress = http://localhost:5031
 
-GET {{BusinessClientsManager_HostAddress}}/weatherforecast/
+GET {{BusinessClientsManager_HostAddress}}/api/business-clients
 Accept: application/json
+
+###
+POST {{BusinessClientsManager_HostAddress}}/api/business-clients
+Accept: */*
 
 ###

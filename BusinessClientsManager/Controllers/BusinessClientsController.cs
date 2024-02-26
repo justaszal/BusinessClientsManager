@@ -3,7 +3,6 @@ using BusinessClientsManager.Models;
 using BusinessClientsManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net;
 using System.Net.Mime;
 
 namespace BusinessClientsManager.Controllers;
@@ -12,12 +11,26 @@ namespace BusinessClientsManager.Controllers;
 [Route("api/business-clients")]
 public class BusinessClientsController:  ControllerBase
 {
-    //private readonly IClientRepo _clientRepo;
+    private readonly IClientRepo _clientRepo;
     private readonly IBusinessClientService _clientService;
 
-    public BusinessClientsController(IBusinessClientService clientService)
+    public BusinessClientsController(IBusinessClientService clientService, IClientRepo clientRepo)
     {
+        _clientRepo = clientRepo;
         _clientService = clientService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] int from=0, [FromQuery] int count=10)
+    {
+        try
+        {
+            var clients = await _clientRepo.GetBusinessClients(from, count);
+            return Ok(clients);
+        } catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost]
