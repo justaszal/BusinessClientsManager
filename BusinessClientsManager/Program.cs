@@ -1,6 +1,16 @@
+using BusinessClientsManager.Data;
+using BusinessClientsManager.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<ClientDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ClientsDB"));
+});
+builder.Services.AddScoped<IClientRepo, ClientRepo>();
+builder.Services.AddScoped<IBusinessClientService, BusinessClientService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
