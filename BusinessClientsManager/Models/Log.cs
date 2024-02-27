@@ -7,4 +7,6 @@ public class Log
     public string ObjectName { get; set; }
     public string ObjectId { get; set; }
     public DateTime EventDate { get; set; }
+    public string? PrevObject { get; set; }
+    public string? NextObject { get; set; }
 }

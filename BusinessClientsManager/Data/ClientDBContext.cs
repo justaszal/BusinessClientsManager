@@ -28,7 +28,13 @@ namespace BusinessClientsManager.Data
                     .WithMany(e => e.BusinessClients)
                     .HasForeignKey(e => e.PostcodeName)
                     .IsRequired(false);
-                entity.ToTable("BusinessClient");
+                entity.ToTable(
+                    "BusinessClient", tb => {
+                        tb.HasTrigger("BusinessClient_Insert");
+                        tb.HasTrigger("BusinessClient_Update");
+                        tb.HasTrigger("BusinessClient_Delete");
+                    }
+                );
             });
 
             modelBuilder.Entity<Postcode>(entity =>
@@ -36,7 +42,13 @@ namespace BusinessClientsManager.Data
                 entity.HasKey(e => e.Name);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(10);
                 entity.Property(e => e.City).IsRequired().HasMaxLength(80);
-                entity.ToTable("Postcode");
+                entity.ToTable(
+                    "Postcode", tb =>
+                    {
+                        tb.HasTrigger("Postcode_Insert");
+                        tb.HasTrigger("Postcode_Update");
+                        tb.HasTrigger("Postcode_Delete");
+                    });
             });
             modelBuilder.Entity<Log>().ToTable("Log");
         }
