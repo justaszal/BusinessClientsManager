@@ -4,7 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAllOrigins",
+                      policy =>
+                      {
+                          policy.WithOrigins("*")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                      });
+});
+
 builder.Services.AddDbContext<ClientDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ClientsDB"));
@@ -33,6 +45,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAllOrigins");
 app.UseAuthorization();
 
 app.MapControllers();
