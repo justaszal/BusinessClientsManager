@@ -5,4 +5,5 @@ namespace BusinessClientsManager.Services;
 public interface IBusinessClientService
 {
     public Task<bool> InsertBusinessClients(IEnumerable<BusinessClient> clients);
+    public Task<bool> UpdatePostCodes();
 }

@@ -33,6 +33,26 @@ public class BusinessClientsController:  ControllerBase
         }
     }
 
+    [HttpPut("/postcode")]
+    public async Task<IActionResult> UpdatePostCode()
+    {
+        try
+        {
+            var isSuccess = await _clientService.UpdatePostCodes();
+            if (isSuccess)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest("No post codes were updated");
+            }
+        } catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
     [HttpPost]
     public async Task<IActionResult> Post([FromForm] CreateBusinessClientsRequest request)
     {
