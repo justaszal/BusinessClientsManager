@@ -10,5 +10,5 @@ public interface IClientRepo
     public Task<IEnumerable<BusinessClient>> GetBusinessClientsWithoutPostCode();
     public Task<IEnumerable<BusinessClient>> GetBusinessClients(int from = 0, int count = 10);
     public Task<Postcode> AddPostcode(string name, string city);
-    public Task<bool> SaveChanges();
+    public Task<int> SaveChanges();
 }

@@ -1,4 +1,5 @@
-﻿using BusinessClientsManager.Data;
+﻿using AutoMapper;
+using BusinessClientsManager.Data;
 using BusinessClientsManager.Models;
 using BusinessClientsManager.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ public class BusinessClientsController:  ControllerBase
 {
     private readonly IClientRepo _clientRepo;
     private readonly IBusinessClientService _clientService;
+    private readonly IMapper _mapper;
 
-    public BusinessClientsController(IBusinessClientService clientService, IClientRepo clientRepo)
+    public BusinessClientsController(IBusinessClientService clientService, IClientRepo clientRepo, IMapper mapper)
     {
         _clientRepo = clientRepo;
         _clientService = clientService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -26,26 +29,21 @@ public class BusinessClientsController:  ControllerBase
         try
         {
             var clients = await _clientRepo.GetBusinessClients(from, count);
-            return Ok(clients);
+            var clientsResp = _mapper.Map<IEnumerable<BusinessClient>, List<GetBusinessClientsResponse>>(clients);
+            return Ok(clientsResp);
         } catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
 
-    [HttpPut("/postcode")]
+    [HttpPut("postcode")]
     public async Task<IActionResult> UpdatePostCode()
     {
         try
         {
-            var isSuccess = await _clientService.UpdatePostCodes();
-            if (isSuccess)
-            {
-                return Ok();
-            } else
-            {
-                return BadRequest("No post codes were updated");
-            }
+            var updatedCount = await _clientService.UpdatePostCodes();
+            return Ok($"Updated records {updatedCount}");
         } catch (Exception ex)
         {
             return BadRequest(ex.Message);

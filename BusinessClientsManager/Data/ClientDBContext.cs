@@ -23,7 +23,11 @@ namespace BusinessClientsManager.Data
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Address).IsRequired().HasMaxLength(200);
                 entity.HasIndex(e => new { e.Address }).IsUnique(true);
-                entity.HasOne(e => e.Postcode).WithMany(e => e.BusinessClients).IsRequired(false);
+                entity
+                    .HasOne(e => e.Postcode)
+                    .WithMany(e => e.BusinessClients)
+                    .HasForeignKey(e => e.PostcodeName)
+                    .IsRequired(false);
                 entity.ToTable("BusinessClient");
             });
 

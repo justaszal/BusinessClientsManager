@@ -1,10 +1,8 @@
 ﻿namespace BusinessClientsManager.Models;
 
-public class BusinessClient
+public class GetBusinessClientsResponse
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public string? PostcodeName { get; set; }
-    public Postcode? Postcode { get; set; }
 }

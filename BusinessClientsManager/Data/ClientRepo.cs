@@ -72,9 +72,9 @@ public class ClientRepo : IClientRepo
         return postCode;
     }
 
-    public async Task<bool> SaveChanges()
+    public async Task<int> SaveChanges()
     {
 
-        return await _context.SaveChangesAsync() > 0;
+        return await _context.SaveChangesAsync();
     }
 }

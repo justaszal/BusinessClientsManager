@@ -1,6 +1,6 @@
 ﻿using BusinessClientsManager.Data;
 using BusinessClientsManager.Models;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BusinessClientsManager.Services;
 
@@ -26,17 +26,17 @@ public class BusinessClientService : IBusinessClientService
             if (filteredClients.Count() > 0)
             {
                 await _clientRepo.InsertClients(filteredClients);
-                return await _clientRepo.SaveChanges();
+                return await _clientRepo.SaveChanges() > 0;
             }
 
             return false;
-        } catch (Exception ex)
+        } catch (Exception)
         {
             throw new Exception("Operation failed. Business clients were not inserted");
         }
     }
 
-    public async Task<bool> UpdatePostCodes()
+    public async Task<int> UpdatePostCodes()
     {
         try
         {
@@ -48,18 +48,24 @@ public class BusinessClientService : IBusinessClientService
 
             foreach (var client in clients)
             {
-                var resp = await httpClient.GetFromJsonAsync<GetAddressResponse>($"/?term={client.Address}&key={key}");
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+                };
+                var resp = await httpClient.GetFromJsonAsync<GetAddressResponse>(
+                    $"/?term={client.Address}&key={key}",
+                    options
+                );
 
-                // TODO: Count updated post codes and return the count
                 if (resp != null && resp.Success && resp.Total > 0)
                 {
                     var addressResponse = resp.Data[0];
                     await _clientRepo.UpdateClientPostcode(client.Id, addressResponse.PostCode, addressResponse.City);
                 }
             }
-            await _clientRepo.SaveChanges();
-            return true;
-        } catch (Exception ex)
+            int updatedCount = await _clientRepo.SaveChanges();
+            return updatedCount;
+        } catch (Exception)
         {
             throw new Exception("Operation failed. Post code was not updated");
         }

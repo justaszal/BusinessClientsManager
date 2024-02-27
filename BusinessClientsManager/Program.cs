@@ -11,10 +11,11 @@ builder.Services.AddDbContext<ClientDBContext>(options =>
 });
 builder.Services.AddScoped<IClientRepo, ClientRepo>();
 builder.Services.AddScoped<IBusinessClientService, BusinessClientService>();
-builder.Services.AddHttpClient("APIs:PostIt:ClientName", c =>
+builder.Services.AddHttpClient(builder.Configuration["APIs:PostIt:ClientName"], c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["APIs:PostIt:Url"]);
 });
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
