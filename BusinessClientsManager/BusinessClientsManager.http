@@ -5,6 +5,6 @@ Accept: application/json
 
 ###
 POST {{BusinessClientsManager_HostAddress}}/api/business-clients
-Accept: */*
+Accept: multipart/form-data
 
 ###

@@ -43,7 +43,7 @@ public class BusinessClientsController:  ControllerBase
         try
         {
             var updatedCount = await _clientService.UpdatePostCodes();
-            return Ok($"Updated records {updatedCount}");
+            return Ok(new { updatedItems = updatedCount });
         } catch (Exception ex)
         {
             return BadRequest(ex.Message);
