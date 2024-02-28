@@ -23,5 +23,5 @@ npm run start
 
 ## Features
 - Frontend app renders the business clients list and has a button to update postcodes.
-- Swagger website can be used to call all APIs, including the APi to import the clients JSON file.  
+- Swagger website can be used to call all APIs, including the API to import the clients JSON file.  
 **Swagger website**: `{baseurl}/swagger/index.html`
